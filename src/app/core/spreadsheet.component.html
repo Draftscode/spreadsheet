@@ -1,0 +1,24 @@
+<div class="wrapper">
+    <table class="spreadsheet no-select">
+        <!--<thead>
+        <tr>
+            <th *ngFor="let header of headers">{{header.label}}</th>
+        </tr>
+    </thead>-->
+        <tbody>
+            <tr class="row" *ngFor="let row of rows">
+                <td (mousedown)="selectionModel.down(cell)" (mousemove)="selectionModel.over(cell)" (mouseup)="selectionModel.up(cell)"
+                     class="cell" *ngFor="let cell of row.cells">{{cell.label}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="spreadsheet overlay no-select" *ngFor="let selection of selectionModel.selections || []">
+        <tbody>
+            <tr class="row" *ngFor="let row of rows">
+                <td (mousemove)="selectionModel.over(cell)" (mousedown)="selectionModel.down(cell)" (mouseup)="selectionModel.up(cell)" class="cell"
+                    [ngClass]="selection.isInside(cell)?'selected':'hidden'"
+                    *ngFor="let cell of row.cells"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
