@@ -1,24 +1,33 @@
 <div class="wrapper">
-    <table class="spreadsheet no-select">
-        <!--<thead>
-        <tr>
-            <th *ngFor="let header of headers">{{header.label}}</th>
-        </tr>
-    </thead>-->
-        <tbody>
-            <tr class="row" *ngFor="let row of rows">
-                <td (mousedown)="selectionModel.down(cell)" (mousemove)="selectionModel.over(cell)" (mouseup)="selectionModel.up(cell)"
-                     class="cell" *ngFor="let cell of row.cells">{{cell.label}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="spreadsheet overlay no-select" *ngFor="let selection of selectionModel.selections || []">
-        <tbody>
-            <tr class="row" *ngFor="let row of rows">
-                <td (mousemove)="selectionModel.over(cell)" (mousedown)="selectionModel.down(cell)" (mouseup)="selectionModel.up(cell)" class="cell"
-                    [ngClass]="selection.isInside(cell)?'selected':'hidden'"
-                    *ngFor="let cell of row.cells"></td>
-            </tr>
-        </tbody>
-    </table>
+  <div class="spreadsheet no-select">
+    <div *appVirtualScroll="rows">
+      <ng-container
+        *ngFor="let col of columns | slice : virtualScroll.startColIndex : virtualScroll.endColIndex; let colIndex = index">
+        <span class="cell" [style.height]="row.height+'px'" [style.width]="col.width+'px'">
+          <div class="cell-content">
+            {{row.cells[colIndex].label}}
+          </div>
+        </span>
+      </ng-container><br>
+    </div>
+    <div *ngIf="rows && columns" class="inner-content" (scroll)="onScroll($event)" #scrollContainer>
+      <div #content [style.height]="combinedRowHeight+'px'" [style.width]="combinedColWidth+'px'">
+        <div style="background: green" [style.float]="'left'" [style.height]="'100%'"
+          [style.width]="virtualScroll.offsetLeft+'px'"></div>
+        <div style="background: red" [style.width]="'calc(100% - '+virtualScroll.offsetLeft+'px)'"
+          [style.height]="virtualScroll.offsetTop+'px'"></div>
+        <ng-container *ngFor="let row of rows | slice : virtualScroll.startRowIndex : virtualScroll.endRowIndex">
+          <ng-container
+            *ngFor="let col of columns | slice : virtualScroll.startColIndex : virtualScroll.endColIndex; let colIndex = index">
+            <span class="cell" [style.height]="row.height+'px'" [style.width]="col.width+'px'">
+              <div class="cell-content">
+                {{row.cells[colIndex].label}}
+              </div>
+            </span>
+          </ng-container><br>
+        </ng-container>
+        <div #offsetBottom></div>
+      </div>
+    </div>
+  </div>
 </div>

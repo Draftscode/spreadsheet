@@ -1,0 +1,51 @@
+<div class="wrapper">
+  <!--<table class="spreadsheet no-select">
+    <tbody>
+      <tr class="row" *ngFor="let row of rows">
+        <td class="cell" *ngFor="let cell of row.cells">{{cell.label}}</td>
+      </tr>
+    </tbody>
+  </table>-->
+
+  <div class="spreadsheet no-select">
+    <div class="header vertical" #verticalHeader
+      [style.height]="'calc(100% - '+(horizontalHeader.clientHeight + scrollbarWidth)+'px)'"
+      [style.margin-top]="horizontalHeader.clientHeight+'px'">
+      <ng-container *ngFor="let row of rows; let rowIndex = index">
+        <app-spreadsheet-cell [height]="cellHeight" [width]="100"> {{rowIndex+1}}
+        </app-spreadsheet-cell><br>
+      </ng-container>
+    </div>
+    <div class="header horizontal" #horizontalHeader
+      [style.width]="'calc(100% - '+(verticalHeader.clientWidth + scrollbarWidth)+'px)'">
+      <tr>
+        <th [style.width]="'100px'" [style.height]="cellHeight+'px'" *ngFor="let headerCell of columns; let colIndex = index">
+          <span>{{colIndex+1}}</span>
+          <!--<app-spreadsheet-cell [height]="cellHeight" [width]="100"> {{colIndex+1}}
+        </app-spreadsheet-cell>-->
+        </th>
+      </tr>
+    </div>
+    <ng-container *ngIf="verticalHeader && horizontalHeader">
+      <div class="scroll-container" (scroll)="onScroll($event)"
+        [style.width]="'calc(100% - '+verticalHeader.clientWidth+'px)'"
+        [style.height]="'calc(100% - '+horizontalHeader.clientHeight+'px)'" #content>
+        <tr *ngFor="let row of rows;" [style.height]="cellHeight+'px'">
+          <td *ngFor="let cell of row.cells; let i = index" [style.width]="'100px'">
+            <!--<app-spreadsheet-cell [height]="cellHeight" (mousemove)="selectionModel.over($event,cell)"
+              (mousedown)="selectionModel.down($event,cell)" (mouseup)="selectionModel.up($event,cell)" [width]="100">
+              <div class="cell-overlay" *ngIf="selectionModel?.getSelectionCount(cell)"
+                [ngClass]="selectionModel.getBorders(cell)">
+                <div
+                  [style.opacity]="(1 * selectionModel.getSelectionCount(cell)) > 0.75 ? 0.75:(1 * selectionModel.getSelectionCount(cell))"
+                  class="overlay-background"></div>
+              </div>
+              {{cell.label}}
+            </app-spreadsheet-cell>-->
+            {{cell.label}}
+          </td>
+        </tr>
+      </div>
+    </ng-container>
+  </div>
+</div>

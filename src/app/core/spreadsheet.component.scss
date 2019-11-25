@@ -1,41 +1,46 @@
+$selection-border-color:rgb(24, 24, 122);
+
 .wrapper {
   position: relative;
+  height: 100%;
 }
 
 .spreadsheet {
   width: 100%;
-  border-collapse: collapse;
-  .cell {
-    border: 1px solid rgb(225, 225, 225);
-    padding: 5px;
-    height: 20px;
-  }
-  .cell.selected {
-    background-color: rgba(255, 0, 0, 0.5);
-    color: transparent;
-  }
-  .selected:first-child {
+  height: 100%;
+  white-space: nowrap;
+  .inner-content {
+    white-space: nowrap;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    .cell {
+      height: 100%;
+      display: inline-block;
 
-    background: black
-  }
-
-  .cell.hidden {
-    opacity: 0;
+      .cell-content {
+        width: calc(100% - 1px);
+        height: calc(100% - 1px);
+        border-right: 1px solid rgb(235, 235, 235);
+        border-bottom: 1px solid rgb(235, 235, 235);
+      }
+    }
   }
 }
 
 .no-select {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
                                     supported by Chrome and Opera */
-}
-
-.overlay {
-  position: absolute;
-  left: 0;
-  top: 0;
 }

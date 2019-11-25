@@ -1,65 +1,98 @@
 import { v4 as uuid } from 'uuid';
 import { Cell } from './cell';
 export class SelectionArea {
-    private _startRow: number;
-    private _startCol: number;
-    private _endRow: number;
-    private _endCol: number;
-    private _id: string;
+  private _startRow: number;
+  private _startCol: number;
+  private _endRow: number;
+  private _endCol: number;
+  private _id: string;
 
-    public get id(): string {
-        return this._id;
+  public get id(): string {
+    return this._id;
+  }
+
+  public set id(id: string) {
+    this._id = id;
+  }
+
+
+  public get startRow(): number {
+    return this._startRow;
+  }
+
+  public set startRow(startRow: number) {
+    this._startRow = startRow;
+  }
+
+  public get startCol(): number {
+    return this._startCol;
+  }
+
+  public set startCol(startCol: number) {
+    this._startCol = startCol;
+  }
+
+  public get endRow(): number {
+    return this._endRow;
+  }
+
+  public set endRow(endRow: number) {
+    this._endRow = endRow;
+  }
+
+  public get endCol(): number {
+    return this._endCol;
+  }
+
+  public set endCol(endCol: number) {
+    this._endCol = endCol;
+  }
+
+  public getBorder(cell: Cell): SelectionBorders {
+    const result = { left: false, right: false, top: false, bottom: false };
+    if (!this.isInside(cell)) {
+      return result;
     }
 
-    public set id(id: string) {
-        this._id = id;
+
+    if (cell.col === Math.min(this._startCol, this._endCol)) {
+      result.left = true;
     }
 
-
-    public get startRow(): number {
-        return this._startRow;
+    if (cell.col === Math.max(this._startCol, this._endCol)) {
+      result.right = true;
     }
 
-    public set startRow(startRow: number) {
-        this._startRow = startRow;
+    if (cell.row === Math.min(this._startRow, this._endRow)) {
+      result.top = true;
     }
 
-    public get startCol(): number {
-        return this._startCol;
+    if (cell.row === Math.max(this._startRow, this._endRow)) {
+      result.bottom = true;
     }
 
-    public set startCol(startCol: number) {
-        this._startCol = startCol;
-    }
+    return result;
+  }
 
-    public get endRow(): number {
-        return this._endRow;
-    }
+  public isInside(cell: Cell): boolean {
+    return cell.col >= Math.min(this._startCol, this._endCol) &&
+      cell.col <= Math.max(this._startCol, this._endCol) &&
+      cell.row >= Math.min(this._startRow, this._endRow) &&
+      cell.row <= Math.max(this._startRow, this._endRow);
+  }
 
-    public set endRow(endRow: number) {
-        this._endRow = endRow;
-    }
+  constructor(startRow: number, startCol: number, endRow: number, endCol: number) {
+    this._startRow = startRow;
+    this._startCol = startCol;
+    this._endCol = endCol;
+    this._endRow = endRow;
+    this._id = uuid();
+  }
+}
 
-    public get endCol(): number {
-        return this._endCol;
-    }
-
-    public set endCol(endCol: number) {
-        this._endCol = endCol;
-    }
-
-    public isInside(cell: Cell): boolean {
-        return cell.col >= Math.min(this._startCol, this._endCol) &&
-            cell.col <= Math.max(this._startCol, this._endCol) &&
-            cell.row >= Math.min(this._startRow, this._endRow) &&
-            cell.row <= Math.max(this._startRow, this._endRow);
-    }
-
-    constructor(startRow: number, startCol: number, endRow: number, endCol: number) {
-        this._startRow = startRow;
-        this._startCol = startCol;
-        this._endCol = endCol;
-        this._endRow = endRow;
-        this._id = uuid();
-    }
+export interface SelectionBorders {
+  top: boolean;
+  bottom: boolean;
+  left: boolean;
+  right: boolean;
 }
